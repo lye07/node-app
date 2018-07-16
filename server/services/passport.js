@@ -20,33 +20,33 @@ passport.serializeUser((user, done) => {
 
 // deserializeUser is to take the previouse store session info and mongoose find it in the data base then turn it in to a user object 
 
-
-passport.deserializeUser((id,done)=> {
+passport.deserializeUser((id, done) => {
     // the "user" we are passing in is from the user return from GoogleStrategy
-    User.findById(id).then(user=> {
+    User.findById(id).then(user => {
         done(null, user);
     })
 })
 
 passport.use(new GoogleStrategy({
-    clientID: keys.googleClientID,
-    clientSecret: keys.googleClientSecret,
-    callbackURL: '/auth/google/callback'
-},
+        clientID: keys.googleClientID,
+        clientSecret: keys.googleClientSecret,
+        callbackURL: '/auth/google/callback'
+    },
     (accessToken, refreshToken, profile, done) => {
         //findOne returns a promise. Find if the user exist in db or else create a new user. 
-        User.findOne({googleId: profile.id})
-            .then((existingUser)=>{
-                if(existingUser){
+        User.findOne({
+                googleId: profile.id
+            })
+            .then((existingUser) => {
+                if (existingUser) {
                     done(null, existingUser)
                 } else {
                     //creates a new model instance
                     new User({
-                        googleId: profile.id
-                    }).save()
+                            googleId: profile.id
+                        }).save()
                         .then(user => done(null, user))
                 }
             })
-        }
-    )
-);
+    }
+));
