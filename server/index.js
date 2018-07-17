@@ -23,7 +23,7 @@ app.use(passport.session());
 require('./routes/authRoutes')(app);
 
 // process.env.PORT (environment configuration will be passed by heroku at run time, process.env means to get underline environment and tell us which port to use)
-// console.log(process.env)
+//console.log(process.env)
 
 const PORT = process.env.PORT || 5000;
 
