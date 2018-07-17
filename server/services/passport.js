@@ -4,6 +4,8 @@ const mongoose = require('mongoose')
 const keys = require('../config/keys');
 
 const User = mongoose.model('user');
+// ********** this file is about passport configuration (helper modules and business logic) ***********//
+
 
 // ==> user click google login, 
 // ==> it will go check if it is an existingUser in passport.use(). Then it will need to give user123 agent a token that says the user is user123 
@@ -30,7 +32,8 @@ passport.deserializeUser((id, done) => {
 passport.use(new GoogleStrategy({
         clientID: keys.googleClientID,
         clientSecret: keys.googleClientSecret,
-        callbackURL: '/auth/google/callback'
+        callbackURL: '/auth/google/callback',
+        proxy: true
     },
     (accessToken, refreshToken, profile, done) => {
         //findOne returns a promise. Find if the user exist in db or else create a new user. 
